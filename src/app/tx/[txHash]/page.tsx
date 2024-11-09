@@ -1,5 +1,4 @@
 'use client';
-import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import IntentTransaction from '@/components/Transaction/IntentTransaction';
 import { useQuery } from '@tanstack/react-query';

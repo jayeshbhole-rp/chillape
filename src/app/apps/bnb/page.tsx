@@ -493,11 +493,7 @@ const Page = () => {
             <TxButtons
               className='w-full'
               chainId={sourceChainId}
-              label={
-                quote?.PayLoad?.prioritySteps[step]
-                  ? quote?.PayLoad?.prioritySteps[step].instructionTitle || 'Transact'
-                  : 'Stake'
-              }
+              label={'Pay to add liquidity'}
               error={transactionError ?? protocolQuoteError ?? balanceError}
               handleComplete={() => {}}
               handleTransaction={handleTransaction}
