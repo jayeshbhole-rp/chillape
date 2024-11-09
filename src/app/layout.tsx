@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/sonner";
 import AppContext from "@/context/AppContext";
 import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
-import "./globals.css";
+import "@/styles/globals.css";
 
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"] });
 
