@@ -16,8 +16,8 @@ interface LayoutStore {
 }
 
 const useLayoutStore = create<LayoutStore>()((set) => ({
-  isQrModalOpen: true,
-  isConfirmationModalOpen: true,
+  isQrModalOpen: false,
+  isConfirmationModalOpen: false,
 
   setConfirmationModalOpen: (isConfirmationModalOpen) => set({ isConfirmationModalOpen }),
 
