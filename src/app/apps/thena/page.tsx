@@ -8,6 +8,7 @@ import QrModal from '@/components/QrModal';
 import TokensSelector from '@/components/TokensSelector';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import { INTENTS_BASE_URI, QR_API_URI } from '@/constants';
 import { CHAINS, type ChainIds } from '@/constants/chains';
 import { TOKEN_MAP, TOKEN_SYMBOL_MAP, type Token } from '@/constants/tokens';
@@ -16,7 +17,7 @@ import useLayoutStore from '@/hooks/useLayoutStore';
 import useTokenData from '@/hooks/useTokenData';
 import { getSecondsToDurationString } from '@/lib/duration';
 import { formatNumber } from '@/lib/formatNumber';
-import { NATIVE, cn, getTokenLogoURI } from '@/lib/utils';
+import { NATIVE, cn, getTokenLogoURI, isTokenETH } from '@/lib/utils';
 import { QuoteApiResponse, type FeeQuoteCalldataResponse } from '@/types/intents';
 import { useQuery } from '@tanstack/react-query';
 import { ArrowDown, Info } from 'lucide-react';
@@ -171,7 +172,7 @@ const Page = () => {
 
       return data as QuoteApiResponse;
     },
-    enabled: !!(sourceToken && sourceChainId && debouncedStakeAmount && tokenA && tokenB),
+    enabled: !!(sourceToken && sourceChainId && debouncedStakeAmount && tokenA && tokenB && recipient),
     staleTime: 45_000, // 30 seconds
     retry: false,
   });
@@ -350,6 +351,29 @@ const Page = () => {
                 {'/'}
                 {tokenB ? tokenB.symbol : '-'}
               </div>
+            </div>
+
+            <div className='relative w-full'>
+              <Input
+                value={recipient}
+                onChange={(e) => setRecipient(e.target.value)}
+              />
+
+              <Button
+                onClick={(e: unknown) => {
+                  void navigator.clipboard.readText().then(async (address) => {
+                    // check if text is an address
+                    if (address.length !== 42) return;
+                    if (!address.startsWith('0x')) return;
+
+                    setRecipient(address);
+                  });
+                }}
+                variant='outline'
+                className='absolute right-2 top-3 h-6 w-12 p-1 text-xs'
+              >
+                Paste
+              </Button>
             </div>
 
             <div className='flex gap-2 rounded-md bg-background/40 p-2 text-neutral-400'>
