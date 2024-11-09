@@ -12,22 +12,15 @@ import { INTENTS_BASE_URI, QR_API_URI } from '@/constants';
 import { CHAINS, type ChainIds } from '@/constants/chains';
 import { TOKEN_MAP, TOKEN_SYMBOL_MAP, type Token } from '@/constants/tokens';
 import { useWalletContext } from '@/context/WalletContext';
-import useIntentTransactions from '@/hooks/useIntentCalldata';
 import useLayoutStore from '@/hooks/useLayoutStore';
 import useTokenData from '@/hooks/useTokenData';
 import { getSecondsToDurationString } from '@/lib/duration';
 import { formatNumber } from '@/lib/formatNumber';
-import { NATIVE, cn, getTokenLogoURI, updateDbTransaction } from '@/lib/utils';
-import {
-  QuoteApiResponse,
-  type ComposeCalldataResponse,
-  type FeeQuoteCalldataResponse,
-  type ProtocolParamsResponse,
-} from '@/types/intents';
+import { NATIVE, cn, getTokenLogoURI } from '@/lib/utils';
+import { QuoteApiResponse, type FeeQuoteCalldataResponse } from '@/types/intents';
 import { useQuery } from '@tanstack/react-query';
 import { ArrowDown, Info } from 'lucide-react';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
 import { formatUnits, parseUnits, zeroAddress } from 'viem';
@@ -120,7 +113,7 @@ const Page = () => {
       tokenB?.decimals,
     ],
     queryFn: async () => {
-      const data = await fetch(`https://${QR_API_URI}/adapter/transaction`, {
+      const data = await fetch(`${QR_API_URI}/adapter/transaction`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -184,7 +177,7 @@ const Page = () => {
   });
 
   const { data: feeQuote, isLoading: isFeeQuoteLoading } = useQuery({
-    queryKey: ['thena fee quote', quote?.quoteResponse],
+    queryKey: ['thena fee quote', quote],
     queryFn: async () => {
       if (!quote?.quoteResponse) {
         throw new Error('No data');

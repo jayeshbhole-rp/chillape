@@ -9,7 +9,7 @@ if (window.Telegram && window.Telegram.WebApp) {
 
 let telegramAuth: any;
 
-export const QR_TG_API_BASE_URL = `https://${QR_API_URI}/etherfi`;
+export const QR_TG_API_BASE_URL = `${QR_API_URI}/etherfi`;
 
 export const qrApi = axios.create({
   baseURL: QR_TG_API_BASE_URL,
