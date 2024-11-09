@@ -1,27 +1,27 @@
-import { Dispatch, SetStateAction } from 'react';
-import { Connector } from 'wagmi';
+import { Dispatch, SetStateAction } from "react";
+import { Connector } from "wagmi";
 
 export enum NetworkType {
-  EVM = 'evm',
-  COSMOS = 'cosmos',
-  TRON = 'tron',
-  NEAR = 'near',
+  EVM = "evm",
+  COSMOS = "cosmos",
+  TRON = "tron",
+  NEAR = "near",
 }
 
 export const WALLET_ID = {
-  injected: 'injected',
-  metamask: 'metamask',
-  walletConnect: 'walletConnect',
-  coinbaseWalletSDK: 'coinbaseWalletSDK',
-  'io.metamask': 'io.metamask',
-  'io.rabby': 'io.rabby',
-  'sh.frame': 'sh.frame',
-  'app.phantom': 'app.phantom',
-  safe: 'safe',
-  keplr: 'keplr',
-  trust: 'trust',
-  tronLink: 'tronLink',
-  exodus: 'exodus',
+  injected: "injected",
+  metamask: "metamask",
+  walletConnect: "walletConnect",
+  coinbaseWalletSDK: "coinbaseWalletSDK",
+  "io.metamask": "io.metamask",
+  "io.rabby": "io.rabby",
+  "sh.frame": "sh.frame",
+  "app.phantom": "app.phantom",
+  safe: "safe",
+  keplr: "keplr",
+  trust: "trust",
+  tronLink: "tronLink",
+  exodus: "exodus",
 } as const;
 
 export type WalletId = string;
@@ -49,11 +49,10 @@ export type CurrentWallet = {
   type: NetworkType;
 };
 
-export type ConnectedWallets = {
-  [key in NetworkType]: {
-    [key in WalletId]?: WalletData;
-  };
-};
+export type ConnectedWallets = Record<
+  NetworkType,
+  Partial<Record<WalletId, WalletData>>
+>;
 export const initialConnectedWallets: ConnectedWallets = {
   [NetworkType.EVM]: {},
   [NetworkType.COSMOS]: {},
