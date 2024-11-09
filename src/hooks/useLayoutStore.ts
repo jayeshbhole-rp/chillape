@@ -16,12 +16,8 @@ interface LayoutStore {
 }
 
 const useLayoutStore = create<LayoutStore>()((set) => ({
-  mode: 'swap',
-  showQuote: false,
-  isWalletModalOpen: false,
-  isAccountModalOpen: false,
-  isQrModalOpen: false,
-  isConfirmationModalOpen: false,
+  isQrModalOpen: true,
+  isConfirmationModalOpen: true,
 
   setConfirmationModalOpen: (isConfirmationModalOpen) => set({ isConfirmationModalOpen }),
 

@@ -136,13 +136,11 @@ const QrModal = ({
         open={isQrModalOpen}
         onOpenChange={handleQrModalOpenChange}
       >
-        <DialogContent className='h-full overflow-hidden border-none bg-transparent p-0 pt-16 outline-none ht-sm:pt-32'>
+        <DialogContent className='overflow-hidden border-none bg-transparent p-0 pt-16 outline-none ht-sm:pt-32'>
           <div className=' relative flex max-h-[40rem] w-full flex-col gap-4 overflow-auto bg-background py-4'>
             <DialogClose />
             <DialogHeader className='sticky top-0 px-6 py-1'>
-              <DialogTitle className='dark:text-brand-secondary font-normal tracking-wide text-slate-900'>
-                Scan to Pay
-              </DialogTitle>
+              <DialogTitle className='font-normal tracking-wide'>Scan to Pay</DialogTitle>
             </DialogHeader>
 
             <div className='flex flex-row gap-4 px-6'>
@@ -185,6 +183,8 @@ const QrModal = ({
 
             <div className='px-6 py-2'>
               <p>{transactionText}</p>
+              <br />
+              <p>Please wait here to keep a track of your request.</p>
             </div>
 
             <div className='flex flex-row gap-4 px-6 pb-2 '>
