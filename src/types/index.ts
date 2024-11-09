@@ -1,28 +1,21 @@
-import type { Transaction, TransactionReceipt } from "viem";
-import type { AdapterIdParamsResponse } from "./intents";
+import { Transaction, TransactionReceipt } from 'viem';
+import { AdapterIdParamsResponse } from './intents';
 
 export type GetAdapterStatusParams = {
   transaction: TransactionReceipt;
   adapter: AdapterIdParamsResponse;
 };
 
-export type AdapterStatus = "successful" | "failed" | "loading" | "error";
+export type AdapterStatus = 'successful' | 'failed' | 'loading' | 'error';
 
-export type AdapterMapItem = Omit<AdapterIdParamsResponse, "adapters"> & {
+export type AdapterMapItem = Omit<AdapterIdParamsResponse, 'adapters'> & {
   adapters: AdapterMapItem[];
   adapterIndices: string[];
   adapterIndex: string;
 };
 export type AdapterMap = Record<string, AdapterMapItem>;
 
-export type BatchStatus =
-  | "successful"
-  | "src_failed"
-  | "dest_failed"
-  | "loading"
-  | "received"
-  | "error"
-  | "failed";
+export type BatchStatus = 'successful' | 'src_failed' | 'dest_failed' | 'loading' | 'received' | 'error' | 'failed';
 
 export type BatchParams = {
   sourceChainId: string;
@@ -81,5 +74,5 @@ export type BatchQueryCallback = (
   batchId: string,
   status: BatchStatus,
   data: Partial<BatchData>,
-  adapterStatuses: Record<string, AdapterStatus>,
+  adapterStatuses: { [key in string]: AdapterStatus }, //Record<string, AdapterStatus>,
 ) => void;

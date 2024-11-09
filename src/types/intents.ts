@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import type { AdapterMap } from ".";
+import { AdapterMap } from '.';
 
 export interface TokenData {
   address: string;
@@ -85,8 +84,8 @@ export interface ProtocolRequestBody {
 }
 
 export enum PoolProviders {
-  NONE = "none",
-  LSD_LLAMA = "lsd_llama",
+  NONE = 'none',
+  LSD_LLAMA = 'lsd_llama',
 }
 
 export interface PoolData {
