@@ -1,24 +1,31 @@
-import { CHAIN_ID, ChainId } from "@tangled3/react";
 import { z } from "zod";
-import arbitrumTokens from "./networks/arbitrum.json";
-import avalancheTokens from "./networks/avalanche.json";
-import baseTokens from "./networks/base.json";
-import binanceTokens from "./networks/binance.json";
-import blastTokens from "./networks/blast.json";
+import { CHAIN_IDS, ChainIds } from "../chains";
+import goerliTokens from "./networks/goerli.json";
+import mumbaiTokens from "./networks/mumbai.json";
+import fujiTokens from "./networks/fuji.json";
 import ethereumTokens from "./networks/ethereum.json";
-import lineaTokens from "./networks/linea.json";
-import mantaTokens from "./networks/manta.json";
-import mantleTokens from "./networks/mantle.json";
-import optimismTokens from "./networks/optimism.json";
 import polygonTokens from "./networks/polygon.json";
-import polygonZkevmTokens from "./networks/polygon_zkevm.json";
-import scrollTokens from "./networks/scroll.json";
+import arbitrumTokens from "./networks/arbitrum.json";
+import optimismTokens from "./networks/optimism.json";
 import zksyncTokens from "./networks/zksync.json";
+import avalancheTokens from "./networks/avalanche.json";
+import binanceTokens from "./networks/binance.json";
+import polygonZkevmTokens from "./networks/polygon_zkevm.json";
+import mantaTokens from "./networks/manta.json";
+import scrollTokens from "./networks/scroll.json";
+import scrollSepoliaTokens from "./networks/scrollSepolia.json";
+import sepoliaTokens from "./networks/sepolia.json";
+import mantleTokens from "./networks/mantle.json";
+import baseTokens from "./networks/base.json";
+import lineaTokens from "./networks/linea.json";
+import tronTokens from "./networks/tron.json";
+import blastTokens from "./networks/blast.json";
+import xLayerTokens from "./networks/xLayer.json";
 
-const ChainsSchema = z.enum(Object.keys(CHAIN_ID) as [string, ...string[]]);
+const ChainsSchema = z.enum(Object.keys(CHAIN_IDS) as [string, ...string[]]);
 
 export interface TokenBalanceData {
-  chainId: ChainId;
+  chainId: ChainIds;
   tokenAddress: string;
 }
 
@@ -42,7 +49,7 @@ const TokenMapSchema = z
   )
   .refine(
     (obj) => {
-      const chainIds = Object.keys(obj) as ChainId[];
+      const chainIds = Object.keys(obj) as ChainIds[];
       return chainIds.every((chainId) => {
         const tokens = obj[chainId];
         return Object.keys(tokens).every((tokenAddress) => {
@@ -58,20 +65,27 @@ const TokenMapSchema = z
 export type TokenMap = z.infer<typeof TokenMapSchema>;
 
 export const TOKEN_MAP: TokenMap = {
-  [CHAIN_ID.ethereum]: ethereumTokens,
-  [CHAIN_ID.polygon]: polygonTokens,
-  [CHAIN_ID.arbitrum]: arbitrumTokens,
-  [CHAIN_ID.optimism]: optimismTokens,
-  [CHAIN_ID.zksync]: zksyncTokens,
-  [CHAIN_ID.avalanche]: avalancheTokens,
-  [CHAIN_ID.binance]: binanceTokens,
-  [CHAIN_ID.polygon_zkevm]: polygonZkevmTokens,
-  [CHAIN_ID.manta]: mantaTokens,
-  [CHAIN_ID.scroll]: scrollTokens,
-  [CHAIN_ID.mantle]: mantleTokens,
-  [CHAIN_ID.base]: baseTokens,
-  [CHAIN_ID.linea]: lineaTokens,
-  [CHAIN_ID.blast]: blastTokens,
+  [CHAIN_IDS.goerli]: goerliTokens,
+  [CHAIN_IDS.mumbai]: mumbaiTokens,
+  [CHAIN_IDS.fuji]: fujiTokens,
+  [CHAIN_IDS.ethereum]: ethereumTokens,
+  [CHAIN_IDS.polygon]: polygonTokens,
+  [CHAIN_IDS.arbitrum]: arbitrumTokens,
+  [CHAIN_IDS.optimism]: optimismTokens,
+  [CHAIN_IDS.zksync]: zksyncTokens,
+  [CHAIN_IDS.avalanche]: avalancheTokens,
+  [CHAIN_IDS.binance]: binanceTokens,
+  [CHAIN_IDS.polygon_zkevm]: polygonZkevmTokens,
+  [CHAIN_IDS.manta]: mantaTokens,
+  [CHAIN_IDS.scroll]: scrollTokens,
+  [CHAIN_IDS.mantle]: mantleTokens,
+  [CHAIN_IDS.base]: baseTokens,
+  [CHAIN_IDS.linea]: lineaTokens,
+  [CHAIN_IDS.blast]: blastTokens,
+  [CHAIN_IDS.tron]: tronTokens,
+  [CHAIN_IDS.scrollSepolia]: scrollSepoliaTokens,
+  [CHAIN_IDS.sepolia]: sepoliaTokens,
+  [CHAIN_IDS.xlayer]: xLayerTokens,
 };
 
 export const TOKEN_SYMBOL_MAP = Object.entries(TOKEN_MAP).reduce(
@@ -87,3 +101,33 @@ export const TOKEN_SYMBOL_MAP = Object.entries(TOKEN_MAP).reduce(
   },
   {} as Record<string, Record<string, Token>>,
 );
+
+export const CHAIN_TOKEN_STETH_ADDRESS_MAP = {
+  [CHAIN_IDS.goerli]: "",
+  [CHAIN_IDS.mumbai]: "",
+  [CHAIN_IDS.fuji]: "",
+  [CHAIN_IDS.ethereum]: "0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84",
+  [CHAIN_IDS.polygon]: "",
+  [CHAIN_IDS.arbitrum]: "0x5979D7b546E38E414F7E9822514be443A4800529",
+  [CHAIN_IDS.optimism]: "0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb",
+  [CHAIN_IDS.zksync]: "0x703b52F2b28fEbcB60E1372858AF5b18849FE867",
+  [CHAIN_IDS.avalanche]: "",
+  [CHAIN_IDS.binance]: "",
+  [CHAIN_IDS.polygon_zkevm]: "",
+  [CHAIN_IDS.manta]: "",
+  [CHAIN_IDS.scroll]: "",
+  [CHAIN_IDS.mantle]: "",
+  [CHAIN_IDS.base]: "",
+  [CHAIN_IDS.linea]: "0xB5beDd42000b71FddE22D3eE8a79Bd49A568fC8F",
+  [CHAIN_IDS.tron]: "",
+  [CHAIN_IDS.scrollSepolia]: "",
+  [CHAIN_IDS.sepolia]: "",
+  [CHAIN_IDS.blast]: "",
+  [CHAIN_IDS.xlayer]: "",
+};
+
+export const STAKE_STONE_ADDRESSES: { [key: string]: string } = {
+  "534352": "0x80137510979822322193FC997d400D5A6C747bf7",
+  "1": "0x7122985656e38BDC0302Db86685bb972b145bD3C",
+  "196": "0x80137510979822322193fc997d400d5a6c747bf7",
+};

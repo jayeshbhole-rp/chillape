@@ -1,43 +1,25 @@
-"use client";
-
-import { solana, TangledContextProvider } from "@tangled3/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import type { ReactNode } from "react";
+'use client';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import WalletContextProvider from './WalletContext';
+import { WagmiProvider } from 'wagmi';
+import { wagmiConfig } from './WagmiContext';
+import TronContextProvider from './TronContext';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const queryClient = new QueryClient();
 
-const AppContextProvider = ({ children }: { children: ReactNode }) => {
+const AppContext = ({ children }: { children: React.ReactNode }) => {
   return (
     <QueryClientProvider client={queryClient}>
-      <TangledContextProvider
-        config={{
-          projectName: "Chill Ape",
-          chainConfigs: {
-            solana: {
-              ...solana,
-              rpcUrls: {
-                default: {
-                  http: [
-                    process.env.NEXT_PUBLIC_SOLANA_API ??
-                      "https://api.mainnet-beta.solana.com",
-                  ],
-                },
-              },
-            },
-          },
-          twaReturnUrl: `${window.location.origin}/` as `${string}://${string}`,
-          bitcoinNetwork: "mainnet",
-          nearNetwork: "mainnet",
-          projectId: "20ee4bdd5d688d3957fae8f0608fa611",
-          tonconnectManifestUrl: `${window.location.origin}/tonconnect-manifest.json`,
-        }}
-      >
-        {children}
-        <ReactQueryDevtools initialIsOpen={false} />
-      </TangledContextProvider>
+      <TronContextProvider>
+        <WagmiProvider config={wagmiConfig}>
+          <WalletContextProvider>{children}</WalletContextProvider>
+        </WagmiProvider>
+      </TronContextProvider>
+
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 };
 
-export default AppContextProvider;
+export default AppContext;
