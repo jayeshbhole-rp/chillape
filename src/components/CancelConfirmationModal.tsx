@@ -6,20 +6,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  Drawer,
-  DrawerHeader,
-  DrawerOverlay,
-  DrawerPortal,
-  DrawerTitle,
-} from "@/components/ui/drawer";
 import { useEffect } from "react";
 import { useMediaQuery } from "usehooks-ts";
-import { Drawer as DrawerPrimitive } from "vaul";
-import { formatUnits } from "viem";
-import { Button } from "./ui/button";
-import { formatNumber } from "../lib/formatNumber";
 import useLayoutStore from "../hooks/useLayoutStore";
+import { Button } from "./ui/button";
 
 const NavigationButtons = () => {
   const closeConfirmationModal = useLayoutStore(

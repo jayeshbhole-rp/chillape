@@ -2,14 +2,17 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import QRCode from "react-qr-code";
-import { toast } from "sonner";
 import { useMediaQuery } from "usehooks-ts";
-import { Drawer as DrawerPrimitive } from "vaul";
 import { formatUnits } from "viem";
-import { Button } from "./ui/button";
+import useLayoutStore from "../hooks/useLayoutStore";
+import { formatNumber } from "../lib/formatNumber";
 import { shortenAddress } from "../lib/utils";
+import { convertToBaseE } from "../lib/utils/convertToBaseE";
+import CancelConfirmationModal from "./CancelConfirmationModal";
+import { Button } from "./ui/button";
+import CopyButton from "./ui/CopyButton";
 import {
   Dialog,
   DialogClose,
@@ -17,11 +20,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "./ui/dialog";
-import { formatNumber } from "../lib/formatNumber";
-import CancelConfirmationModal from "./CancelConfirmationModal";
-import useLayoutStore from "../hooks/useLayoutStore";
-import { convertToBaseE } from "../lib/utils/convertToBaseE";
-import CopyButton from "./ui/CopyButton";
 
 const NavigationButtons = () => {
   const openConfirmationModal = useLayoutStore(
