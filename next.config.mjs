@@ -8,7 +8,7 @@ const nextConfig = {
     return [
       {
         source: '/',
-        destination: '/apps/basenames',
+        destination: '/apps/bnb',
         permanent: false,
       },
     ];
