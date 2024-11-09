@@ -55,29 +55,27 @@ const CancelConfirmationModal = () => {
     };
   }, [isQrModalOpen, setConfirmationModalOpen]);
 
-  if (isDesktop) {
-    return (
-      <Dialog
-        open={isConfirmationModalOpen}
-        onOpenChange={setConfirmationModalOpen}
-      >
-        <DialogContent className='overflow-hidden  border-none bg-transparent p-0 pt-16 outline-none ht-sm:pt-32'>
-          <div className=' relative flex max-h-[40rem] w-full flex-col gap-4 overflow-auto bg-background py-4'>
-            <DialogClose />
-            <DialogHeader className='sticky top-0 px-6 py-1'>
-              <DialogTitle className='font-normal tracking-wide '>Are you sure you want to cancel ?</DialogTitle>
-            </DialogHeader>
+  return (
+    <Dialog
+      open={isConfirmationModalOpen}
+      onOpenChange={setConfirmationModalOpen}
+    >
+      <DialogContent className=' overflow-hidden  border-none bg-transparent p-0 pt-16 outline-none ht-sm:pt-32'>
+        <div className=' relative flex max-h-[40rem] w-full flex-col gap-4 overflow-auto bg-background py-4'>
+          <DialogClose />
+          <DialogHeader className='sticky top-0 px-6 py-1'>
+            <DialogTitle className='font-normal tracking-wide '>Are you sure you want to cancel ?</DialogTitle>
+          </DialogHeader>
 
-            <div className='px-6 py-2'>
-              <p>Please do not close this model if you have paid funds from your wallet.</p>
-            </div>
-
-            <NavigationButtons />
+          <div className='px-6 py-2'>
+            <p>Please do not close this model if you have paid funds from your wallet.</p>
           </div>
-        </DialogContent>
-      </Dialog>
-    );
-  }
+
+          <NavigationButtons />
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
 };
 
 export default CancelConfirmationModal;
