@@ -1,11 +1,11 @@
 import { ChainIds, CHAINS } from "@/constants/chains";
 import { useWalletContext } from "@/context/WalletContext";
+import useSendTransaction from "@/hooks/useSendTransaction";
 import { getTransactionReceiptFromChain } from "@/lib/getTransactionFromChain";
 import { capitalized } from "@/lib/utils";
 import { AdapterMapItem } from "@/types";
 import { encodeFunctionData, parseEventLogs, zeroAddress } from "viem";
 import { Button } from "../ui/button";
-import { useSendTransaction } from "@tangled3/react";
 
 const BridgeClaimButton = ({
   bridgeData,
@@ -16,12 +16,8 @@ const BridgeClaimButton = ({
   bridgeData: AdapterMapItem;
   setClaimStatus: (status: "success" | undefined) => void;
 }) => {
-  const {
-    error,
-    data: hash,
-    isPending: isTransactionPending,
-    mutateAsync: sendTransactionAsync,
-  } = useSendTransaction();
+  const { error, hash, isTransactionPending, sendTransactionAsync } =
+    useSendTransaction();
   const { switchChain, currentChainId } = useWalletContext();
 
   const handleClaim = async () => {
