@@ -64,6 +64,7 @@ const AmountInput = ({
           className='absolute right-1 top-1/2 flex -translate-y-1/2 cursor-pointer items-center gap-2'
         >
           {sourceToken ? (
+            // eslint-disable-next-line @next/next/no-img-element
             <img
               loading='eager'
               src={getTokenLogoURI(sourceToken?.address, CHAINS[sourceChainId])}

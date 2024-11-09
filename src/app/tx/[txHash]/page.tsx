@@ -1,7 +1,6 @@
 'use client';
 import Header from '@/components/Header';
 import IntentTransaction from '@/components/Transaction/IntentTransaction';
-import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 
 const Page = () => {
@@ -19,8 +18,6 @@ const Page = () => {
           <IntentTransaction txHash={params.txHash} />
         </div>
       </main>
-
-      <Footer />
     </>
   );
 };
