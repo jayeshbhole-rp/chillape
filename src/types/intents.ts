@@ -61,6 +61,24 @@ export interface ProtocolParamsResponse {
   estimatedTime?: number;
 }
 
+export interface QuoteApiResponse {
+  quoteResponse: ProtocolParamsResponse;
+  PayLoad: ComposeCalldataResponse;
+  depositMeta: DepositMeta;
+}
+
+export interface DepositMeta {
+  depositAddress: string;
+  genericData: {
+    callTo: string;
+    approvalTo: string;
+    data: string;
+    srcToken: string;
+    refundAddress: string;
+  };
+  salt: string;
+}
+
 export interface ProtocolRequestBody {
   ReceiverAddress: string;
   SourceTokens: Array<{
