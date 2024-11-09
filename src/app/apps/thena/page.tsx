@@ -53,6 +53,7 @@ const Page = () => {
   const openQrModal = useLayoutStore((state) => state.openQrModal);
   const closeQrModal = useLayoutStore((state) => state.closeQrModal);
 
+  const [recipient, setRecipient] = useState('');
   const inputContainer = useRef<HTMLDivElement>(null);
   const [sourceChainId, setSourceChainId] = useState<ChainIds>('137');
   const [destChainId, setdestChainId] = useState<ChainIds>('56');
@@ -93,17 +94,30 @@ const Page = () => {
     },
   });
 
-  const { data: quote } = useQuery({
+  const {
+    data: quote,
+    error: quoteError,
+    isLoading: isQuoteLoading,
+  } = useQuery({
     queryKey: [
       'quote qr transaction',
       sourceChainId,
       debouncedStakeAmount,
       tokenA,
       tokenB,
-      currentAccount,
       sourceToken,
       destChainId,
       pool,
+      recipient,
+      sourceToken?.address,
+      sourceToken?.symbol,
+      sourceToken?.decimals,
+      tokenA?.address,
+      tokenA?.symbol,
+      tokenA?.decimals,
+      tokenB?.address,
+      tokenB?.symbol,
+      tokenB?.decimals,
     ],
     queryFn: async () => {
       const data = await fetch(`https://${QR_API_URI}/adapter/transaction`, {
@@ -111,64 +125,9 @@ const Page = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-      }).then((res) => res.json());
 
-      if (!data) {
-        throw new Error('No data');
-      }
-      if (data?.Errors?.length > 0) {
-        throw new Error(data.Errors[0].Message.title);
-      }
-
-      return data as QuoteApiResponse;
-    },
-    enabled: !!(sourceToken && sourceChainId && debouncedStakeAmount && tokenA && tokenB),
-    staleTime: 45_000, // 30 seconds
-    retry: false,
-  });
-
-  const {
-    data: protocolQuote,
-    isLoading: isProtocolQuoteLoading,
-    isFetching: isProtocolQuoteFetching,
-    error: protocolQuoteError,
-    dataUpdatedAt: protocolQuoteUpdatedAt,
-  } = useQuery({
-    queryKey: [
-      'thena protocol quote',
-      sourceChainId,
-      sourceToken?.address,
-      debouncedStakeAmount,
-      tokenA,
-      tokenB,
-      currentAccount,
-      sourceToken,
-      currentAccount?.address,
-      sourceToken?.symbol,
-      sourceToken?.decimals,
-      destChainId,
-      tokenA?.address,
-      tokenA?.symbol,
-      tokenA?.decimals,
-      tokenB?.address,
-      tokenB?.symbol,
-      tokenB?.decimals,
-      sourceToken?.decimals,
-      pool,
-    ],
-    queryFn: async ({ signal }) => {
-      if (!sourceToken) {
-        throw new Error('Incomplete parameters');
-      }
-
-      // fetch quote
-      const data = await fetch(INTENTS_BASE_URI + '/router-intent/protocol/get-protocol-quotes', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({
-          ReceiverAddress: currentAccount?.address ?? zeroAddress,
+          ReceiverAddress: recipient || zeroAddress,
           SourceTokens: [
             {
               chainId: sourceChainId,
@@ -194,7 +153,7 @@ const Page = () => {
               decimals: tokenB?.decimals,
             },
           ],
-          Amount: [parseUnits(debouncedStakeAmount, sourceToken.decimals).toString()],
+          Amount: [parseUnits(debouncedStakeAmount, sourceToken!.decimals).toString()],
           SourceChainId: Number(sourceChainId),
           Protocol: [
             {
@@ -203,12 +162,11 @@ const Page = () => {
               action: 'deposit',
               poolId: '',
               data: {
-                stable: pool === Pool.stable ? true : false,
+                stable: pool === 1 ? true : false,
               },
             },
           ],
         }),
-        signal,
       }).then((res) => res.json());
 
       if (!data) {
@@ -218,7 +176,7 @@ const Page = () => {
         throw new Error(data.Errors[0].Message.title);
       }
 
-      return data.PayLoad as ProtocolParamsResponse;
+      return data as QuoteApiResponse;
     },
     enabled: !!(sourceToken && sourceChainId && debouncedStakeAmount && tokenA && tokenB),
     staleTime: 45_000, // 30 seconds
@@ -226,9 +184,9 @@ const Page = () => {
   });
 
   const { data: feeQuote, isLoading: isFeeQuoteLoading } = useQuery({
-    queryKey: ['thena fee quote', protocolQuote],
+    queryKey: ['thena fee quote', quote?.quoteResponse],
     queryFn: async () => {
-      if (!protocolQuote) {
+      if (!quote?.quoteResponse) {
         throw new Error('No data');
       }
       // fetch calldata
@@ -237,7 +195,7 @@ const Page = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(protocolQuote),
+        body: JSON.stringify(quote.quoteResponse),
       }).then((res) => res.json());
 
       if (!data) {
@@ -249,14 +207,14 @@ const Page = () => {
 
       return data.PayLoad as FeeQuoteCalldataResponse;
     },
-    enabled: !!(protocolQuote && !isProtocolQuoteLoading),
+    enabled: !!(quote?.quoteResponse && !isQuoteLoading),
   });
 
   const balanceError = useMemo(() => {
-    return !isProtocolQuoteLoading && Number(debouncedStakeAmount) > Number(tokenBalance?.formatted)
+    return !isQuoteLoading && Number(debouncedStakeAmount) > Number(tokenBalance?.formatted)
       ? new Error('Insufficient Funds')
       : undefined;
-  }, [debouncedStakeAmount, tokenBalance, isProtocolQuoteLoading]);
+  }, [debouncedStakeAmount, tokenBalance, isQuoteLoading]);
 
   const bridgeFee = useMemo(() => {
     if (!feeQuote) return 0;
@@ -417,13 +375,13 @@ const Page = () => {
                 <span
                   className={cn(
                     'text-base font-medium text-neutral-300',
-                    isProtocolQuoteLoading ? 'animate-pulse rounded-xs bg-foreground/10 text-transparent' : '',
+                    isQuoteLoading ? 'animate-pulse rounded-xs bg-foreground/10 text-transparent' : '',
                   )}
                 >
-                  {isProtocolQuoteLoading
+                  {isQuoteLoading
                     ? 'Loading...'
-                    : protocolQuote
-                      ? getSecondsToDurationString(protocolQuote?.estimatedTime ?? 0)
+                    : quote?.quoteResponse
+                      ? getSecondsToDurationString(quote.quoteResponse?.estimatedTime ?? 0)
                       : '--'}
                 </span>
               </div>
@@ -432,12 +390,12 @@ const Page = () => {
                 <span
                   className={cn(
                     'text-base font-medium text-neutral-300',
-                    isProtocolQuoteLoading || isFeeQuoteLoading
+                    isQuoteLoading || isFeeQuoteLoading
                       ? 'animate-pulse rounded-xs bg-foreground/10 text-transparent'
                       : '',
                   )}
                 >
-                  $ {isProtocolQuoteLoading || isFeeQuoteLoading ? 'Loading...' : formatNumber(bridgeFee)}
+                  $ {isQuoteLoading || isFeeQuoteLoading ? 'Loading...' : formatNumber(bridgeFee)}
                 </span>
               </div>
               <div className={'flex flex-col gap-1 rounded-md bg-background/40 p-2 text-neutral-400'}>
@@ -445,10 +403,10 @@ const Page = () => {
                 <span
                   className={cn(
                     'text-base font-medium text-neutral-300',
-                    isProtocolQuoteLoading ? 'animate-pulse rounded-xs bg-foreground/10 text-transparent' : '',
+                    isQuoteLoading ? 'animate-pulse rounded-xs bg-foreground/10 text-transparent' : '',
                   )}
                 >
-                  {isProtocolQuoteLoading ? 'loading...' : protocolQuote?.quote?.[0]?.slippageTolerance ?? '--'}%
+                  {isQuoteLoading ? 'loading...' : quote?.quoteResponse?.quote?.[0]?.slippageTolerance ?? '--'}%
                 </span>
               </div>
               <div className={'flex flex-col gap-1 rounded-md bg-background/40 p-2 text-neutral-400'}>
@@ -456,13 +414,16 @@ const Page = () => {
                 <span
                   className={cn(
                     'text-base font-medium  text-lime-500',
-                    isProtocolQuoteLoading ? 'animate-pulse rounded-xs bg-foreground/10 text-transparent ' : '',
+                    isQuoteLoading ? 'animate-pulse rounded-xs bg-foreground/10 text-transparent ' : '',
                   )}
                 >
-                  {isProtocolQuoteLoading
+                  {isQuoteLoading
                     ? 'loading...'
-                    : protocolQuote?.quote[protocolQuote.quote.length - 1]!.amountReceivedInEther
-                      ? formatNumber(protocolQuote?.quote[protocolQuote.quote.length - 1]!.amountReceivedInEther || 0)
+                    : quote?.quoteResponse?.quote[quote?.quoteResponse.quote.length - 1]!.amountReceivedInEther
+                      ? formatNumber(
+                          quote?.quoteResponse?.quote[quote?.quoteResponse.quote.length - 1]!.amountReceivedInEther ||
+                            0,
+                        )
                       : '--'}{' '}
                 </span>
               </div>
@@ -472,29 +433,19 @@ const Page = () => {
               className='w-full'
               chainId={sourceChainId}
               label={'Pay to add liquidity'}
-              error={protocolQuoteError ?? balanceError}
+              error={quoteError ?? balanceError}
               handleComplete={() => {}}
               handleTransaction={() => {
                 openQrModal();
               }}
-              isDisabled={!protocolQuote || !quote?.PayLoad || isProtocolQuoteLoading || isProtocolQuoteLoading}
-              isLoading={isProtocolQuoteLoading || isProtocolQuoteFetching}
+              isDisabled={!quote || isQuoteLoading || isQuoteLoading}
+              isLoading={isQuoteLoading}
               isSubmitting={false}
               success={false}
               errorLabel={
-                protocolQuoteError
-                  ? protocolQuoteError.message
-                  : balanceError
-                    ? balanceError.message
-                    : 'Something went wrong'
+                quoteError ? quoteError.message : balanceError ? balanceError.message : 'Something went wrong'
               }
-              loadingLabel={
-                isProtocolQuoteLoading
-                  ? 'Building Transaction'
-                  : isProtocolQuoteLoading || isProtocolQuoteFetching
-                    ? 'Fetching Quote'
-                    : undefined
-              }
+              loadingLabel={isQuoteLoading ? 'Building Transaction' : isQuoteLoading ? 'Fetching Quote' : undefined}
               successLabel='Staked Successfully'
             />
           </CardFooter>
