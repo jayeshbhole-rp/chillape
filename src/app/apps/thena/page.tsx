@@ -363,6 +363,7 @@ const Page = () => {
               </Label>
               <div className='relative flex w-full'>
                 <Input
+                  className='w-full'
                   placeholder='Recipient address'
                   value={recipient}
                   onChange={(e) => setRecipient(e.target.value)}
@@ -378,7 +379,7 @@ const Page = () => {
                     });
                   }}
                   variant='outline'
-                  className='absolute right-2 top-3 h-6 w-12 p-1 text-xs'
+                  className='absolute right-2 top-2 h-6 w-12 p-1 text-xs'
                 >
                   Paste
                 </Button>
