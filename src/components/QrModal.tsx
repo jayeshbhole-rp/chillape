@@ -143,10 +143,7 @@ const QrModal = () => {
       <CancelConfirmationModal />
 
       <Dialog open={isQrModalOpen} onOpenChange={handleQrModalOpenChange}>
-        <DialogContent
-          className="ht-sm:pt-32 h-full overflow-hidden border-none bg-transparent p-0 pt-16 outline-none"
-          displayCloseButton={false}
-        >
+        <DialogContent className="ht-sm:pt-32 h-full overflow-hidden border-none bg-transparent p-0 pt-16 outline-none">
           <div className=" relative flex max-h-[40rem] w-full flex-col gap-4 overflow-auto bg-background bg-border py-4">
             <DialogClose />
             <DialogHeader className="sticky top-0 px-6 py-1">
