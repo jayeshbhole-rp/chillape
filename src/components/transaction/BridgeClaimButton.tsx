@@ -1,11 +1,20 @@
-import { ChainIds, CHAINS } from "@/constants/chains";
-import { useWalletContext } from "@/context/WalletContext";
-import useSendTransaction from "@/hooks/useSendTransaction";
-import { getTransactionReceiptFromChain } from "@/lib/getTransactionFromChain";
-import { capitalized } from "@/lib/utils";
-import { AdapterMapItem } from "@/types";
-import { encodeFunctionData, parseEventLogs, zeroAddress } from "viem";
+import React from "react";
 import { Button } from "../ui/button";
+import { AdapterMapItem, BatchData } from "@/types";
+import useSendTransaction from "@/hooks/useSendTransaction";
+import { simulateContract } from "@wagmi/core";
+import { wagmiConfig } from "@/context/WagmiContext";
+import {
+  decodeEventLog,
+  encodeFunctionData,
+  parseEventLogs,
+  zeroAddress,
+} from "viem";
+import { getTransactionReceiptFromChain } from "@/lib/getTransactionFromChain";
+import { ChainIds, CHAINS } from "@/constants/chains";
+import useSwitchChains from "@/hooks/useSwitchChain";
+import { useWalletContext } from "@/context/WalletContext";
+import { capitalized } from "@/lib/utils";
 
 const BridgeClaimButton = ({
   bridgeData,
@@ -154,7 +163,7 @@ const BridgeClaimButton = ({
   if (hash) {
     return (
       <Button
-        className="mr-1text-sm ml-auto h-7 rounded-sm py-1"
+        className="mr-1text-sm ml-auto h-7 rounded-sm  py-1"
         disabled={true}
       >
         Claimed

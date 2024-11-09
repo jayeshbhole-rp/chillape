@@ -1,9 +1,9 @@
-import TransactionStatusContextProvider from '@/context/TransactionStatusContext';
-import { useQuery } from '@tanstack/react-query';
-import TransactionAdapters from './TransactionAdapters';
-import { getDbTransaction } from '@/lib/utils';
-import { TransactionDetails } from '@/types/intents';
-import { BatchStatusMap } from '@/types';
+import TransactionStatusContextProvider from "@/context/TransactionStatusContext";
+import { useQuery } from "@tanstack/react-query";
+import TransactionAdapters from "./TransactionAdapters";
+import { getDbTransaction } from "@/lib/utils";
+import { TransactionDetails } from "@/types/intents";
+import { BatchStatusMap } from "@/types";
 
 const IntentTransaction = ({
   txHash,
@@ -13,7 +13,7 @@ const IntentTransaction = ({
   onTxComplete?: (adapterStatuses?: BatchStatusMap) => void;
 }) => {
   const { data: txData } = useQuery({
-    queryKey: ['txData', txHash],
+    queryKey: ["txData", txHash],
     queryFn: async () => {
       const res = await getDbTransaction({
         hash: txHash,
@@ -26,7 +26,7 @@ const IntentTransaction = ({
   });
   return (
     <TransactionStatusContextProvider
-      sourceChainId={txData?.sourceChainId || ''}
+      sourceChainId={txData?.sourceChainId || ""}
       sourceTxHash={txHash}
       transactionData={txData}
       onTxComplete={onTxComplete}
