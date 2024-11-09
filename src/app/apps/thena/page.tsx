@@ -354,38 +354,35 @@ const Page = () => {
               </div>
             </div>
 
-            <div className='relative w-full'>
-              <div className=' flex w-full flex-col justify-between gap-2 xs:w-[40%]'>
-                <Label
-                  className=' font-normal'
-                  htmlFor=''
-                >
-                  Recipient
-                </Label>
-                <div className='flex w-full'>
-                  <Input
-                    placeholder='Recipient address'
-                    value={recipient}
-                    onChange={(e) => setRecipient(e.target.value)}
-                  />
-                </div>
-              </div>
-
-              <Button
-                onClick={(e: unknown) => {
-                  void navigator.clipboard.readText().then(async (address) => {
-                    // check if text is an address
-                    if (address.length !== 42) return;
-                    if (!address.startsWith('0x')) return;
-
-                    setRecipient(address);
-                  });
-                }}
-                variant='outline'
-                className='absolute right-2 top-3 h-6 w-12 p-1 text-xs'
+            <div className='relative flex w-full flex-col justify-between gap-2'>
+              <Label
+                className=' font-normal'
+                htmlFor=''
               >
-                Paste
-              </Button>
+                Recipient
+              </Label>
+              <div className='relative flex w-full'>
+                <Input
+                  placeholder='Recipient address'
+                  value={recipient}
+                  onChange={(e) => setRecipient(e.target.value)}
+                />
+                <Button
+                  onClick={(e: unknown) => {
+                    void navigator.clipboard.readText().then(async (address) => {
+                      // check if text is an address
+                      if (address.length !== 42) return;
+                      if (!address.startsWith('0x')) return;
+
+                      setRecipient(address);
+                    });
+                  }}
+                  variant='outline'
+                  className='absolute right-2 top-3 h-6 w-12 p-1 text-xs'
+                >
+                  Paste
+                </Button>
+              </div>
             </div>
 
             <div className='flex gap-2 rounded-md bg-background/40 p-2 text-neutral-400'>
