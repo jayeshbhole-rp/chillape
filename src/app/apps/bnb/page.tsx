@@ -1,7 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import AmountInput from "@/components/AmountInput";
@@ -128,6 +125,7 @@ const Page = () => {
       tokenB?.symbol,
       tokenB?.decimals,
       sourceToken?.decimals,
+      pool,
     ],
     queryFn: async ({ signal }) => {
       if (!sourceToken) {
