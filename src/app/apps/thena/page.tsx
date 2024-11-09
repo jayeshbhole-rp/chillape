@@ -9,6 +9,7 @@ import TokensSelector from '@/components/TokensSelector';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { INTENTS_BASE_URI, QR_API_URI } from '@/constants';
 import { CHAINS, type ChainIds } from '@/constants/chains';
 import { TOKEN_MAP, TOKEN_SYMBOL_MAP, type Token } from '@/constants/tokens';
@@ -354,10 +355,21 @@ const Page = () => {
             </div>
 
             <div className='relative w-full'>
-              <Input
-                value={recipient}
-                onChange={(e) => setRecipient(e.target.value)}
-              />
+              <div className=' flex w-full flex-col justify-between gap-2 xs:w-[40%]'>
+                <Label
+                  className=' font-normal'
+                  htmlFor=''
+                >
+                  Recipient
+                </Label>
+                <div className='flex w-full'>
+                  <Input
+                    placeholder='Recipient address'
+                    value={recipient}
+                    onChange={(e) => setRecipient(e.target.value)}
+                  />
+                </div>
+              </div>
 
               <Button
                 onClick={(e: unknown) => {
