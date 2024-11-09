@@ -1,9 +1,6 @@
 'use client';
-import React from 'react';
+import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
-import { useWalletContext } from '@/context/WalletContext';
-import { CHAINS, ChainIds } from '@/constants/chains';
-import { capitalized, cn } from '@/lib/utils';
 
 const TxButtons = ({
   label,
@@ -34,8 +31,6 @@ const TxButtons = ({
   success: boolean;
   successLabel?: string;
 }) => {
-  const { switchChain, currentChainId, currentAccount, openWalletModal } = useWalletContext();
-
   if (error) {
     return (
       <Button
@@ -66,30 +61,6 @@ const TxButtons = ({
         disabled={isDisabled}
       >
         {loadingLabel ?? 'Loading...'}
-      </Button>
-    );
-  }
-
-  if (!currentAccount) {
-    return (
-      <Button
-        className={className}
-        disabled={isDisabled}
-        onClick={openWalletModal}
-      >
-        Connect Wallet
-      </Button>
-    );
-  }
-
-  if (chainId !== currentChainId) {
-    return (
-      <Button
-        disabled={isDisabled}
-        className={className}
-        onClick={() => switchChain(chainId)}
-      >
-        {`Switch to ${capitalized(CHAINS[chainId as ChainIds])}`}
       </Button>
     );
   }

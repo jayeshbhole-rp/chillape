@@ -13,6 +13,7 @@ import { CHAINS, type ChainIds } from '@/constants/chains';
 import { TOKEN_MAP, TOKEN_SYMBOL_MAP, type Token } from '@/constants/tokens';
 import { useWalletContext } from '@/context/WalletContext';
 import useIntentTransactions from '@/hooks/useIntentCalldata';
+import useLayoutStore from '@/hooks/useLayoutStore';
 import useTokenData from '@/hooks/useTokenData';
 import { getSecondsToDurationString } from '@/lib/duration';
 import { formatNumber } from '@/lib/formatNumber';
@@ -49,7 +50,8 @@ const TxButtons = dynamic(() => import('@/components/TxButton'), {
 });
 
 const Page = () => {
-  const router = useRouter();
+  const openQrModal = useLayoutStore((state) => state.openQrModal);
+  const closeQrModal = useLayoutStore((state) => state.closeQrModal);
 
   const inputContainer = useRef<HTMLDivElement>(null);
   const [sourceChainId, setSourceChainId] = useState<ChainIds>('137');
@@ -273,31 +275,6 @@ const Page = () => {
     return bridgeFee;
   }, [ethPrice, feeQuote]);
 
-  const onIntentTransactionComplete = useCallback(
-    (txHash: string) => {
-      void updateDbTransaction({
-        id: quote?.PayLoad.trnxId as string,
-        hash: txHash,
-        status: 'COMPLETED',
-        gasFee: '0',
-      }).then(() => {
-        // open tx page
-        router.push(`/tx/${txHash}`);
-      });
-    },
-    [quote, router],
-  );
-  const onIntentTransactionError = useCallback((error: Error) => {
-    console.error('Error', error);
-  }, []);
-
-  const { handleTransaction, isTransactionPending, transactionError, step } = useIntentTransactions({
-    intentTransaction: quote?.PayLoad,
-    chainId: sourceChainId,
-    onIntentTransactionComplete,
-    onIntentTransactionError,
-  });
-
   const tokenList = useMemo(() => {
     if (!destChainId) return [];
     if (!TOKEN_SYMBOL_MAP[destChainId]) return [];
@@ -311,6 +288,7 @@ const Page = () => {
         protocolQuote={quote?.quoteResponse}
         depositMeta={quote?.depositMeta}
         sourceToken={sourceToken}
+        calldata={quote?.PayLoad}
       />
       <div className='mx-auto flex w-full flex-wrap justify-center gap-4'>
         <Card
@@ -494,18 +472,14 @@ const Page = () => {
               className='w-full'
               chainId={sourceChainId}
               label={'Pay to add liquidity'}
-              error={transactionError ?? protocolQuoteError ?? balanceError}
+              error={protocolQuoteError ?? balanceError}
               handleComplete={() => {}}
-              handleTransaction={handleTransaction}
-              isDisabled={
-                !protocolQuote ||
-                !quote?.PayLoad ||
-                isProtocolQuoteLoading ||
-                isProtocolQuoteLoading ||
-                isTransactionPending
-              }
+              handleTransaction={() => {
+                openQrModal();
+              }}
+              isDisabled={!protocolQuote || !quote?.PayLoad || isProtocolQuoteLoading || isProtocolQuoteLoading}
               isLoading={isProtocolQuoteLoading || isProtocolQuoteFetching}
-              isSubmitting={isTransactionPending}
+              isSubmitting={false}
               success={false}
               errorLabel={
                 protocolQuoteError

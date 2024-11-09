@@ -1,3 +1,4 @@
+import { QR_API_URI } from '@/constants';
 import axios from 'axios';
 
 let initData = '';
@@ -8,10 +9,10 @@ if (window.Telegram && window.Telegram.WebApp) {
 
 let telegramAuth: any;
 
-export const ETHERFI_API_BASE_URL = 'http://localhost:443/etherfi';
+export const QR_TG_API_BASE_URL = `https://${QR_API_URI}/etherfi`;
 
-export const etherfiApi = axios.create({
-  baseURL: ETHERFI_API_BASE_URL,
+export const qrApi = axios.create({
+  baseURL: QR_TG_API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
     'X-Telegram-Web-App-Data': initData,
@@ -19,7 +20,7 @@ export const etherfiApi = axios.create({
 });
 
 export const updateInitData = (newInitData: any) => {
-  etherfiApi.defaults.headers['X-Telegram-Web-App-Data'] = newInitData;
+  qrApi.defaults.headers['X-Telegram-Web-App-Data'] = newInitData;
 };
 
 export function initTelegramAuth() {

@@ -2,19 +2,19 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import QRCode from 'react-qr-code';
 import { useMediaQuery } from 'usehooks-ts';
 import { formatUnits } from 'viem';
 import useLayoutStore from '../hooks/useLayoutStore';
 import { formatNumber } from '../lib/formatNumber';
-import { NATIVE, shortenAddress } from '../lib/utils';
+import { NATIVE, shortenAddress, updateDbTransaction } from '../lib/utils';
 import { convertToBaseE } from '../lib/utils/convertToBaseE';
 import CancelConfirmationModal from './CancelConfirmationModal';
 import { Button } from './ui/button';
 import CopyButton from './ui/CopyButton';
 import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
-import { DepositMeta, ProtocolParamsResponse } from '@/types/intents';
+import { ComposeCalldataResponse, DepositMeta, ProtocolParamsResponse } from '@/types/intents';
 import { Token } from '@/constants/tokens';
 import { QR_API_URI } from '@/constants';
 
@@ -37,9 +37,11 @@ const NavigationButtons = () => {
 const QrModal = ({
   protocolQuote,
   depositMeta,
+  calldata,
   sourceToken,
 }: {
   protocolQuote: ProtocolParamsResponse | undefined;
+  calldata: ComposeCalldataResponse | undefined;
   depositMeta: DepositMeta | undefined;
   sourceToken: Token | undefined;
 }) => {
@@ -75,7 +77,7 @@ const QrModal = ({
         throw new Error('Transaction hash not found');
       }
 
-      return txnHash?.txnHash;
+      return txnHash?.txnHash as string;
     },
     [depositMeta?.depositAddress], // Depend on transactionData in useCallback
   );
@@ -89,6 +91,20 @@ const QrModal = ({
     refetchIntervalInBackground: false,
     retry: false, // Disable retry logic as we control it manually
   });
+
+  useEffect(() => {
+    if (txnHash) {
+      void updateDbTransaction({
+        id: calldata?.trnxId as string,
+        hash: txnHash,
+        status: 'COMPLETED',
+        gasFee: '0',
+      }).then(() => {
+        // open tx page
+        router.push(`/tx/${txnHash}`);
+      });
+    }
+  }, [calldata?.trnxId, router, txnHash]);
 
   const transactionText = useMemo(() => {
     if (!protocolQuote) return 'Loading transaction details...';
