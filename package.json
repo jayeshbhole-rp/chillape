@@ -34,6 +34,7 @@
     "@tronweb3/tronwallet-adapters": "^1.2.0",
     "@vercel/postgres": "^0.7.2",
     "@wagmi/core": "^2.6.5",
+    "axios": "^1.7.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "cmdk": "^0.2.1",
