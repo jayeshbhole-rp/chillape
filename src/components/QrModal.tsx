@@ -143,7 +143,7 @@ const QrModal = ({
               <DialogTitle className='font-normal tracking-wide'>Scan to Pay</DialogTitle>
             </DialogHeader>
 
-            <div className='flex flex-row gap-4 px-6'>
+            <div className='flex flex-row flex-wrap gap-4 px-6'>
               <div className='flex-1'>
                 {!protocolQuote ? (
                   <div className='flex gap-2 pt-4 align-middle'>
@@ -163,6 +163,7 @@ const QrModal = ({
                   </>
                 )}
               </div>
+
               <div className='flex flex-1 items-center justify-center'>
                 <div className=' relative flex max-h-[40rem] w-full flex-col gap-4 overflow-auto bg-background'>
                   <div className='flex items-center justify-center bg-white p-2'>
