@@ -45,6 +45,7 @@ const TxButtons = dynamic(() => import('@/components/TxButton'), {
 });
 
 const Page = () => {
+  const isQrModalOpen = useLayoutStore((state) => state.isQrModalOpen);
   const openQrModal = useLayoutStore((state) => state.openQrModal);
   const closeQrModal = useLayoutStore((state) => state.closeQrModal);
 
@@ -173,7 +174,15 @@ const Page = () => {
 
       return data as QuoteApiResponse;
     },
-    enabled: !!(sourceToken && sourceChainId && debouncedStakeAmount && tokenA && tokenB && recipient),
+    enabled: !!(
+      sourceToken &&
+      sourceChainId &&
+      debouncedStakeAmount &&
+      tokenA &&
+      tokenB &&
+      recipient &&
+      !isQrModalOpen
+    ),
     staleTime: 45_000, // 30 seconds
     retry: false,
   });
