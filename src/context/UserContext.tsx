@@ -1,5 +1,14 @@
 import { getUserData, initTelegramAuth } from '@/lib/telegramAuth';
-import React, { createContext, useState, useCallback, useEffect, useRef, useMemo, ReactElement } from 'react';
+import React, {
+  createContext,
+  useState,
+  useCallback,
+  useEffect,
+  useRef,
+  useMemo,
+  ReactElement,
+  useContext,
+} from 'react';
 
 interface UserContextType {
   id: string | null;
@@ -136,5 +145,7 @@ export const UserProvider = ({ children }: { children: ReactElement }) => {
 
   return <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>;
 };
+
+export const useUserContext = () => useContext(UserContext);
 
 export default UserContext;
