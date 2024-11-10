@@ -23,7 +23,7 @@ const HeaderLogo = () => {
   }
   if (pathname.startsWith('/all')) {
     return (
-      <div className='grid grid-cols-[1.25rem,_1fr] items-center gap-2 gap-y-0 sm:grid-cols-[2.5rem,_1fr]'>
+      <div className='grid grid-cols-[1.25rem,_1fr] items-start gap-2 gap-y-0 justify-self-start sm:grid-cols-[2.5rem,_1fr]'>
         <Image
           src={`/images/partners/tx.png`}
           width={256}
@@ -36,7 +36,7 @@ const HeaderLogo = () => {
     );
   }
   return (
-    <div className='grid grid-cols-[1.25rem,_1fr] items-center gap-2 gap-y-0 sm:grid-cols-[2.5rem,_1fr]'>
+    <div className='grid grid-cols-[1.25rem,_1fr] items-center gap-2 gap-y-0 justify-self-start sm:grid-cols-[2.5rem,_1fr]'>
       <Image
         src={`/images/partners/${pathname.split('/apps/')?.[1] === 'lido-testnet' ? 'lido' : pathname.split('/apps/')?.[1]}.png`}
         width={256}

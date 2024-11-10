@@ -25,7 +25,7 @@ const Page = () => {
             height={512}
             className='-top-8 left-1/2 -z-[1] w-16 -translate-x-1/2'
           />
-          <h1 className='text-center text-4xl text-amber-500'>All Intent Dapps</h1>
+          <h1 className='text-center text-4xl text-amber-500'>All Ape Branches</h1>
         </div>
 
         <div className='mx-auto flex w-full max-w-[40ch] flex-col gap-2'>
