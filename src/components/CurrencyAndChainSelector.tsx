@@ -26,8 +26,8 @@ const CurrencyAndChainSelector = ({
   setSourceToken,
   testnet,
   filterChains,
-  networkLabel = 'Select Network',
-  tokenLabel = 'Select Token',
+  networkLabel = 'On Network',
+  tokenLabel = 'Pay with',
 }: {
   sourceChainId: ChainIds;
   setSourceChainId: (c: ChainIds) => void;
@@ -60,21 +60,21 @@ const CurrencyAndChainSelector = ({
   return (
     <div className='grid grid-cols-1 gap-x-4 gap-y-1.5 xs:grid-cols-2'>
       <Label
-        className='order-1 font-normal'
+        className='order-3 font-normal xs:order-2'
         htmlFor=''
       >
         {/* Stake from */}
         {networkLabel}
       </Label>
       <Label
-        className='order-3 font-normal xs:order-2'
+        className='order-1 font-normal'
         htmlFor=''
       >
         {/* Stake on */}
         {tokenLabel}
       </Label>
 
-      <div className='order-2 mb-2.5 flex w-full xs:order-3 xs:mb-0'>
+      <div className='order-4 mb-2.5 flex w-full  xs:mb-0'>
         <NetworkSelector
           currentChainId={sourceChainId}
           setChain={setSourceChainId}
@@ -82,7 +82,7 @@ const CurrencyAndChainSelector = ({
         />
       </div>
 
-      <div className='order-4 flex w-full'>
+      <div className='order-2 flex w-full xs:order-3'>
         <TokenSelector
           setSourceToken={setSourceToken}
           sourceChainId={sourceChainId}

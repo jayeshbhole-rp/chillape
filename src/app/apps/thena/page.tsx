@@ -271,7 +271,7 @@ const Page = () => {
               stakeAmount={stakeAmount}
               tokenBalance={tokenBalance}
             />
-            <div className=' w-full'>
+            {/* <div className=' w-full'>
               <ArrowDown
                 className='mx-auto h-5 w-5 shrink-0'
                 color='white'
@@ -285,7 +285,7 @@ const Page = () => {
                 chains={[destChainId]}
                 disabled
               />
-            </div>
+            </div> */}
 
             <TokensSelector
               setTokenA={setTokenA}
