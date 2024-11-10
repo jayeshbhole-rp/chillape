@@ -3,14 +3,14 @@
 import { useWalletContext } from '@/context/WalletContext';
 import { emojiAvatarForAddress } from '@/lib/emojiAvatarForAddress';
 import { cn } from '@/lib/utils';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { zeroAddress } from 'viem';
 import { Button } from '../ui/button';
 import { useUserContext } from '@/context/UserContext';
 
 const WalletButton = () => {
   const { currentAccount, openWalletModal } = useWalletContext();
-  const { first_name, photo_url } = useUserContext();
+  const { first_name, last_name, id, photo_url, isAuthenticated, username, initializeAuth } = useUserContext();
 
   const { color: backgroundColor, emoji } = useMemo(
     () =>
@@ -21,16 +21,32 @@ const WalletButton = () => {
     [currentAccount?.address],
   );
 
+  useEffect(() => {
+    initializeAuth();
+  }, [initializeAuth]);
+
   return (
     <Button
       onClick={openWalletModal}
+      disabled={isAuthenticated}
       className='gap-1 rounded-full'
     >
-      {photo_url ? (
-        <img
-          src={photo_url}
-          alt='img'
-        ></img>
+      {isAuthenticated ? (
+        <div
+          className={cn(
+            'flex h-8 w-8 items-center justify-center rounded-3xl text-base leading-none',
+            '-ml-3 select-none bg-slate-700',
+          )}
+          style={{ backgroundColor }}
+        >
+          <img
+            src={photo_url}
+            alt='img'
+            className='h-5 w-5'
+          />
+
+          {username ?? id}
+        </div>
       ) : currentAccount ? (
         <div
           className={cn(
