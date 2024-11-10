@@ -5,20 +5,23 @@ import { WagmiProvider } from 'wagmi';
 import { wagmiConfig } from './WagmiContext';
 import TronContextProvider from './TronContext';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { UserProvider } from './UserContext';
 
 const queryClient = new QueryClient();
 
 const AppContext = ({ children }: { children: React.ReactNode }) => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <TronContextProvider>
-        <WagmiProvider config={wagmiConfig}>
-          <WalletContextProvider>{children}</WalletContextProvider>
-        </WagmiProvider>
-      </TronContextProvider>
+    <UserProvider>
+      <QueryClientProvider client={queryClient}>
+        <TronContextProvider>
+          <WagmiProvider config={wagmiConfig}>
+            <WalletContextProvider>{children}</WalletContextProvider>
+          </WagmiProvider>
+        </TronContextProvider>
 
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </UserProvider>
   );
 };
 
