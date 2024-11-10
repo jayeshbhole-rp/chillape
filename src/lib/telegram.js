@@ -14,8 +14,8 @@ const bot = new TelegramBot(token, { polling: true });
 // /start command handler
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
-  bot.sendPhoto(chatId, 'https://via.placeholder.com/800x400.png?text=Trade%2C+Stay+Ahead', { // Replace with actual image URL
-    caption: `Welcome to ChillApe - the next generation of user-friendly Dapp invested by Binance Labs.`,
+  bot.sendPhoto(chatId, 'https://chillape-bnb.vercel.app/banner.png', { // Replace with actual image URL
+    caption: `Welcome to ChillApe - the next generation of user-friendly Dapp invested by Binance Labs.(We're manifesting 😉)`,
     reply_markup: {
       inline_keyboard: [
         [
@@ -66,7 +66,7 @@ bot.on('callback_query', (query) => {
         reply_markup: {
           inline_keyboard: [
             [
-              { text: 'Open Thena Mini App', url: "https://chillape-bnb.vercel.app/apps/thena" }
+              { text: 'Open Thena Mini App', url: "https://t.me/chillape_bnb_bot/app" }
             ]
           ]
         }
