@@ -7,9 +7,14 @@ import Link from 'next/link';
 const intentApps: {
   name: string;
   link: string;
+  logo: string;
   disabled?: boolean;
   external?: string;
-}[] = [{ name: 'thena', link: '/apps/thena' }];
+}[] = [
+  { name: 'thena', logo: '/images/partners/thena.png', link: '/apps/thena' },
+  { name: 'nitro', logo: '/images/partners/nitro.png', link: '/apps/nitro', disabled: true },
+  { name: 'pancake', logo: '/images/partners/pancakeswap.png', link: '/apps/pancake', disabled: true },
+];
 
 const Page = () => {
   return (
@@ -28,20 +33,28 @@ const Page = () => {
           <h1 className='text-center text-4xl text-amber-500'>All Ape Branches</h1>
         </div>
 
-        <div className='mx-auto flex w-full max-w-[40ch] flex-col gap-2'>
+        <div className='mx-auto grid w-full max-w-[50ch] grid-cols-2 gap-2'>
           {intentApps.map((app) => (
             <Link
               key={app.link}
               href={!app.disabled ? app.link : ''}
               className={cn(
-                'flex h-12 items-center justify-between rounded-md border border-neutral-600 px-4 transition-all hover:bg-neutral-900 hover:text-amber-500 ',
+                'flex h-16 items-center justify-between rounded-md border border-neutral-600 px-4 transition-all hover:bg-neutral-900 hover:text-amber-500 ',
                 app.disabled && 'cursor-not-allowed text-neutral-500  hover:text-neutral-500',
               )}
             >
               / {app.name}
-              <div className='flex gap-1'>
+              <div className='flex items-center gap-1'>
                 {app.external && <ArrowUpRight className={cn('h-6 w-6', !app.disabled && ' text-amber-500')} />}
                 {app.disabled && <Lock className='h-5 w-5 text-neutral-500' />}
+
+                {app.logo && (
+                  <img
+                    className='h-6 w-6 rounded-sm'
+                    src={app.logo}
+                    alt=''
+                  />
+                )}
               </div>
             </Link>
           ))}
