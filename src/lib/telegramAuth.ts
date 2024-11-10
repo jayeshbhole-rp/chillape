@@ -1,36 +1,19 @@
 import { QR_API_URI } from '@/constants';
-import axios from 'axios';
-
-let initData = '';
-
-if (window.Telegram && window.Telegram.WebApp) {
-  initData = window.Telegram.WebApp.initData;
-}
 
 let telegramAuth: any;
 
 export const QR_TG_API_BASE_URL = `${QR_API_URI}/etherfi`;
 
-export const qrApi = axios.create({
-  baseURL: QR_TG_API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-    'X-Telegram-Web-App-Data': initData,
-  },
-});
-
-export const updateInitData = (newInitData: any) => {
-  qrApi.defaults.headers['X-Telegram-Web-App-Data'] = newInitData;
-};
-
 export function initTelegramAuth() {
+  if (!window) return;
+
   return new Promise((resolve, reject) => {
     console.log('Initializing Telegram Auth', {});
     if (window.Telegram && window.Telegram.WebApp) {
       console.log('Telegram WebApp found', {});
       window.Telegram.WebApp.ready();
       telegramAuth = window.Telegram.WebApp.initData;
-      updateInitData(telegramAuth);
+      // updateInitData(telegramAuth);
       console.log('Telegram WebApp initialized', { initData: telegramAuth });
       resolve(true);
     } else if (window.TelegramGameProxy) {
@@ -38,7 +21,7 @@ export function initTelegramAuth() {
       if (typeof window.TelegramGameProxy.initParams === 'function') {
         window.TelegramGameProxy.initParams((params: any) => {
           telegramAuth = params;
-          updateInitData(telegramAuth);
+          // updateInitData(telegramAuth);
           console.log('TelegramGameProxy initialized', {
             params: telegramAuth,
           });
@@ -47,7 +30,7 @@ export function initTelegramAuth() {
       } else {
         console.log('TelegramGameProxy found, but initParams is not a function', {});
         telegramAuth = window.TelegramGameProxy;
-        updateInitData(telegramAuth);
+        // updateInitData(telegramAuth);
         resolve(true);
       }
     } else {
