@@ -10,10 +10,13 @@ const intentApps: {
   logo: string;
   disabled?: boolean;
   external?: string;
+  wide?: boolean;
 }[] = [
   { name: 'thena', logo: '/images/partners/thena.png', link: '/apps/thena' },
   { name: 'nitro', logo: '/images/partners/nitro.png', link: '/apps/nitro', disabled: true },
+  { name: 'element', logo: '/images/partners/element.png', wide: true, link: '/apps/pancake', disabled: true },
   { name: 'pancake', logo: '/images/partners/pancakeswap.png', link: '/apps/pancake', disabled: true },
+  { name: 'buy gas', logo: '/images/partners/nitro.png', link: '/apps/buy-gas', disabled: true },
 ];
 
 const Page = () => {
@@ -39,8 +42,9 @@ const Page = () => {
               key={app.link}
               href={!app.disabled ? app.link : ''}
               className={cn(
-                'flex h-16 items-center justify-between rounded-md border border-neutral-600 px-4 transition-all hover:bg-neutral-900 hover:text-amber-500 ',
+                'flex h-20 items-center justify-between rounded-md border border-neutral-600 px-4 transition-all hover:bg-neutral-900 hover:text-amber-500 ',
                 app.disabled && 'cursor-not-allowed text-neutral-500  hover:text-neutral-500',
+                app.wide && 'col-span-2',
               )}
             >
               / {app.name}
