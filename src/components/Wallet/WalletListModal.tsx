@@ -65,7 +65,7 @@ export function WalletListModal({ open, setOpen }: { open: boolean; setOpen: Dis
               <span className='ml-auto'></span>
 
               {currentWallet?.id === wallet.id && (
-                <span className='h-2 w-2 rounded-sm bg-green-400 p-1 outline outline-2 outline-offset-2 outline-green-800' />
+                <span className='h-2 w-2 rounded-sm bg-violet-400 p-1 outline outline-2 outline-offset-2 outline-violet-800' />
               )}
 
               {connectedWallets['evm'][wallet.id]?.loading && (
@@ -114,7 +114,7 @@ export function WalletListModal({ open, setOpen }: { open: boolean; setOpen: Dis
               <span className='ml-auto'></span>
 
               {currentWallet?.id === wallet.id && (
-                <span className='h-2 w-2 rounded-sm bg-green-400 p-1 outline outline-2 outline-offset-2 outline-green-800' />
+                <span className='h-2 w-2 rounded-sm bg-violet-400 p-1 outline outline-2 outline-offset-2 outline-violet-800' />
               )}
 
               {connectedWallets['tron'][wallet.id]?.address && (

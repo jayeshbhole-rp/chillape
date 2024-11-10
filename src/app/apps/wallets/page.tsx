@@ -11,7 +11,7 @@ const Page = () => {
   const [currentChainId, setChain] = useState<ChainIds>('1');
   return (
     <>
-      <h1 className='text-center text-4xl text-lime-500'>Wallets</h1>
+      <h1 className='text-center text-4xl text-amber-500'>Wallets</h1>
       <div className='mx-auto flex w-full max-w-[45ch] flex-col gap-2'>
         <div className='my-4 flex flex-col gap-2'>
           <WalletList showNetwork={true} />

@@ -250,7 +250,7 @@ const Page = () => {
         >
           <CardHeader className=' gap-1'>
             <div>
-              <CardTitle className='text-3xl text-lime-500'>Deposit Liquidity on Thena</CardTitle>
+              <CardTitle className='text-3xl text-amber-500'>Deposit Liquidity on Thena</CardTitle>
               <CardDescription>Powered by Router Intents</CardDescription>
             </div>
           </CardHeader>
@@ -388,7 +388,7 @@ const Page = () => {
 
             <div className='flex gap-2 rounded-md bg-background/40 p-2 text-neutral-400'>
               <Info
-                className='my-auto flex-shrink-0 text-lime-500'
+                className='my-auto flex-shrink-0 text-amber-500'
                 size={'20px'}
               />
               <span className='flex-grow text-xs text-white'>Make sure your assets correspond to the pool type.</span>
@@ -440,7 +440,7 @@ const Page = () => {
                 <span className='text-xs'>Min Received</span>
                 <span
                   className={cn(
-                    'text-base font-medium  text-lime-500',
+                    'text-base font-medium  text-amber-500',
                     isQuoteLoading ? 'animate-pulse rounded-xs bg-foreground/10 text-transparent ' : '',
                   )}
                 >

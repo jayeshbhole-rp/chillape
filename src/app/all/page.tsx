@@ -25,7 +25,7 @@ const Page = () => {
             height={512}
             className='-top-8 left-1/2 -z-[1] w-16 -translate-x-1/2'
           />
-          <h1 className='text-center text-4xl text-lime-500'>All Intent Dapps</h1>
+          <h1 className='text-center text-4xl text-amber-500'>All Intent Dapps</h1>
         </div>
 
         <div className='mx-auto flex w-full max-w-[40ch] flex-col gap-2'>
@@ -34,13 +34,13 @@ const Page = () => {
               key={app.link}
               href={!app.disabled ? app.link : ''}
               className={cn(
-                'flex h-12 items-center justify-between rounded-md border border-neutral-600 px-4 transition-all hover:bg-neutral-900 hover:text-lime-500 ',
+                'flex h-12 items-center justify-between rounded-md border border-neutral-600 px-4 transition-all hover:bg-neutral-900 hover:text-amber-500 ',
                 app.disabled && 'cursor-not-allowed text-neutral-500  hover:text-neutral-500',
               )}
             >
               / {app.name}
               <div className='flex gap-1'>
-                {app.external && <ArrowUpRight className={cn('h-6 w-6', !app.disabled && ' text-lime-500')} />}
+                {app.external && <ArrowUpRight className={cn('h-6 w-6', !app.disabled && ' text-amber-500')} />}
                 {app.disabled && <Lock className='h-5 w-5 text-neutral-500' />}
               </div>
             </Link>

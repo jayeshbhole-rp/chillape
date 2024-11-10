@@ -19,7 +19,7 @@ const Page = () => {
     >
       <DialogContent className='p-0'>
         <DialogHeader className='px-4 pt-4'>
-          <h1 className='text-center text-2xl text-lime-500'>Track Your Transaction</h1>
+          <h1 className='text-center text-2xl text-amber-500'>Track Your Transaction</h1>
         </DialogHeader>
 
         <div className='p-4 pt-4'>

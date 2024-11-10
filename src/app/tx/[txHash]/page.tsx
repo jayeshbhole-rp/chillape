@@ -13,7 +13,7 @@ const Page = () => {
       <Header mode='app' />
 
       <main className='relative mx-auto mt-16 flex min-h-[calc(100vh_-_10rem)] max-w-[1600px] flex-col gap-8  p-4 px-8'>
-        <h1 className='text-center text-4xl text-lime-500'>Track Transaction</h1>
+        <h1 className='text-center text-4xl text-amber-500'>Track Transaction</h1>
         <div>
           <IntentTransaction txHash={params.txHash} />
         </div>
